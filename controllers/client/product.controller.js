@@ -1,7 +1,20 @@
+const Product = require("../../models/product.model");
+
 // [GET] /products/
-module.exports.index = (request, response) => {
+module.exports.index = async (request, response) => {
+    const products = await Product.find({
+        status: "active",
+        deleted: false,
+    });
+
+    for (const item of products) {
+        item.priceNew = item.price * (1 - item.discountPercentage / 100);
+        item.priceNew = item.priceNew.toFixed(0);
+    }
+
     response.render("client/pages/products/index.pug", {
         pageTitle: "Product List",
+        products: products,
     });
 };
 
