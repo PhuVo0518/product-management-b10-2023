@@ -6,6 +6,7 @@ dotenv.config();
 
 database.connect();
 
+const routesAdmin = require("./routes/admin/index.route");
 const routesClient = require("./routes/client/index.route");
 
 const app = express();
@@ -15,6 +16,9 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(express.static("public"));
+
+// Routes Admin
+routesAdmin(app);
 
 // Routes Client
 routesClient(app);
