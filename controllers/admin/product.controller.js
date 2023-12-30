@@ -1,35 +1,10 @@
 const Product = require("../../models/product.model");
+const filterStateHelper = require("../../helpers/filter-state.helper");
 
 // [GET] /admin/products
 module.exports.index = async (request, response) => {
     // Feature: Filter by State
-    const filterState = [
-        {
-            name: "All",
-            status: "",
-            class: "",
-        },
-        {
-            name: "Active",
-            status: "active",
-            class: "",
-        },
-        {
-            name: "Inactive",
-            status: "inactive",
-            class: "",
-        },
-    ];
-
-    if (request.query.status) {
-        const index = filterState.findIndex(
-            (item) => (item.status = request.query.status)
-        );
-        filterState[index].class = "active";
-    } else {
-        filterState[0].class = "active";
-    }
-
+    const filterState = filterStateHelper(request.query);
     // End Feature: Filter by State
 
     const find = {
