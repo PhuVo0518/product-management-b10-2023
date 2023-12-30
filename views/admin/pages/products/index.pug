@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/filter-state.pug
 include ../../mixins/search.pug
+include ../../mixins/pagination.pug
 
 block main 
     h1.mb-4 #{pageTitle}
@@ -48,4 +49,151 @@ block main
                                 a(href="#" class="badge badge-danger") Inactive
                         td 
                             button(class="btn btn-warning btn-sm") Edit 
-                            button(class="btn btn-danger btn-sm ml-1") Delete        
+                            button(class="btn btn-danger btn-sm ml-1") Delete
+
+    //- nav
+    //-     ul.pagination
+    //-         if(pagination.currentPage > 1)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage - 1
+    //-                 ) Previous Page
+    //-         - for(var i = 1; i <= pagination.totalPage; i++)
+    //-             li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                 button(class="page-link" button-pagination=i) #{i} 
+    //-         if(pagination.currentPage < pagination.totalPage)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage + 1
+    //-                 ) Next Page
+
+
+    //- nav
+    //-     ul.pagination
+    //-         if(pagination.currentPage > 1)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage - 1
+    //-                 ) Previous Page
+                
+    //-         if(pagination.currentPage > 2)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage == 1)
+    //-             - for(var i = pagination.currentPage; i <= pagination.currentPage + 2; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         if(pagination.currentPage == pagination.totalPage)
+    //-             - for(var i = pagination.currentPage - 2; i <= pagination.currentPage; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         if(pagination.currentPage > 1 && pagination.currentPage < pagination.totalPage)
+    //-             - for(var i = pagination.currentPage - 1; i <= pagination.currentPage + 1; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+
+    //-         if(pagination.currentPage < pagination.totalPage - 1)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage < pagination.totalPage)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage + 1
+    //-                 ) Next Page
+
+    //- nav
+    //-     ul.pagination
+    //-         if(pagination.currentPage > 1)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage - 1
+    //-                 ) Previous Page
+                
+    //-         if(pagination.currentPage > 2)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage == 1)
+    //-             - for(var i = pagination.currentPage; i <= pagination.currentPage + 2; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         else if(pagination.currentPage == pagination.totalPage)
+    //-             - for(var i = pagination.currentPage - 2; i <= pagination.currentPage; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         else 
+    //-             - for(var i = pagination.currentPage - 1; i <= pagination.currentPage + 1; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+
+    //-         if(pagination.currentPage < pagination.totalPage - 1)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage < pagination.totalPage)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage + 1
+    //-                 ) Next Page
+    
+    //- nav
+    //-     ul.pagination
+    //-         if(pagination.currentPage > 1)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=1
+    //-                 ) First Page
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage - 1
+    //-                 ) Previous Page
+                
+    //-         if(pagination.currentPage > 2)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage == 1)
+    //-             - for(var i = pagination.currentPage; i <= pagination.currentPage + 2; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         else if(pagination.currentPage == pagination.totalPage)
+    //-             - for(var i = pagination.currentPage - 2; i <= pagination.currentPage; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+            
+    //-         else 
+    //-             - for(var i = pagination.currentPage - 1; i <= pagination.currentPage + 1; i++)
+    //-                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+    //-                     button(class="page-link" button-pagination=i) #{i}
+
+    //-         if(pagination.currentPage < pagination.totalPage - 1)
+    //-             li(class="page-item")
+    //-                 button(class="page-link") ...
+            
+    //-         if(pagination.currentPage < pagination.totalPage)
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.currentPage + 1
+    //-                 ) Next Page
+    //-             li(class="page-item")
+    //-                 button(
+    //-                     class="page-link"
+    //-                     button-pagination=pagination.totalPage
+    //-                 ) Last Page
+    +pagination(pagination)
