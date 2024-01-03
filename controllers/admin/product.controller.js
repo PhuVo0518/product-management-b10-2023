@@ -39,15 +39,48 @@ module.exports.index = async (request, response) => {
             .limit(objectPagination.limitItems)
             .skip(objectPagination.skip);
 
-        response.render("admin/pages/products/index.pug", {
-            pageTitle: "Product List",
-            products: products,
-            filterState: filterState,
-            keyword: request.query.keyword,
-            pagination: objectPagination,
-        });
+        // response.render("admin/pages/products/index.pug", {
+        //     pageTitle: "Product List",
+        //     products: products,
+        //     filterState: filterState,
+        //     keyword: request.query.keyword,
+        //     pagination: objectPagination,
+        // });
+
+        // Check error
+        if (products.length > 0 || countProducts == 0) {
+            response.render("admin/pages/products/index.pug", {
+                pageTitle: "Product List",
+                products: products,
+                filterState: filterState,
+                keyword: request.query.keyword,
+                pagination: objectPagination,
+            });
+        } else {
+            let stringQuery = "";
+
+            for (const key in request.query) {
+                if (key != "page") {
+                    stringQuery += `&${key}=${request.query[key]}`;
+                }
+            }
+
+            const href = `${request.baseUrl}?page=1${stringQuery}`;
+
+            response.redirect(href);
+        }
     } catch (error) {
         console.log(error);
         response.redirect(`/${systemConfig.prefixAdmin}/products`);
     }
+};
+
+// [PATCH] /admin/products/change-status/:status/:id
+module.exports.changeStatus = async (request, response) => {
+    const status = request.params.status;
+    const id = request.params.id;
+
+    await Product.updateOne({ _id: id }, { status: status });
+
+    response.redirect("back");
 };
