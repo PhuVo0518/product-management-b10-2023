@@ -5,7 +5,7 @@ module.exports.index = async (request, response) => {
     const products = await Product.find({
         status: "active",
         deleted: false,
-    });
+    }).sort({ position: "desc" });
 
     for (const item of products) {
         item.priceNew = item.price * (1 - item.discountPercentage / 100);
