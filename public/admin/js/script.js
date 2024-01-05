@@ -134,6 +134,17 @@ if (formChangeMulti) {
     formChangeMulti.addEventListener("submit", (event) => {
         event.preventDefault();
 
+        const type = event.target.elements.type.value;
+
+        if (type == "delete-all") {
+            const isConfirm = confirm(
+                "Are you sure you want to delete these selected documents?"
+            );
+            if (!isConfirm) {
+                return;
+            }
+        }
+
         const inputsChecked = document.querySelectorAll(
             "input[name='id']:checked"
         );
