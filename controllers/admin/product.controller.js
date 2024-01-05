@@ -110,3 +110,26 @@ module.exports.changeMulti = async (request, response) => {
 
     response.redirect("back");
 };
+
+// [DELETE] /admin/products/delete/:id
+module.exports.deleteItem = async (request, response) => {
+    try {
+        const id = request.params.id;
+
+        // delete permanently
+        // await Product.deleteOne({ _id: id });
+
+        // soft deletion
+        await Product.updateOne(
+            { _id: id },
+            {
+                deleted: true,
+                deletedAt: new Date(),
+            }
+        );
+    } catch (error) {
+        console.log(error);
+    }
+
+    response.redirect("back");
+};
