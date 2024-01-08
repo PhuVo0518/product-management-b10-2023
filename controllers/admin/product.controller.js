@@ -118,6 +118,8 @@ module.exports.changeMulti = async (request, response) => {
                     deletedAt: new Date(),
                 }
             );
+
+            request.flash("success", "Delete product(s) successfully!");
             break;
         case "change-position":
             for (const item of ids) {
@@ -133,6 +135,8 @@ module.exports.changeMulti = async (request, response) => {
                     }
                 );
             }
+
+            request.flash("success", "Change position(s) successfully!");
             break;
         default:
             break;
@@ -157,6 +161,8 @@ module.exports.deleteItem = async (request, response) => {
                 deletedAt: new Date(),
             }
         );
+
+        request.flash("success", "Delete product(s) successfully!");
     } catch (error) {
         console.log(error);
     }
