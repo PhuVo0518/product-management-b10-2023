@@ -83,6 +83,8 @@ module.exports.changeStatus = async (request, response) => {
 
     await Product.updateOne({ _id: id }, { status: status });
 
+    request.flash("success", "Update status successfully!");
+
     response.redirect("back");
 };
 
@@ -103,6 +105,8 @@ module.exports.changeMulti = async (request, response) => {
                     status: type,
                 }
             );
+
+            request.flash("success", "Update status successfully!");
             break;
         case "delete-all":
             await Product.updateMany(
