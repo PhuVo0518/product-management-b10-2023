@@ -222,3 +222,19 @@ if (showAlert) {
 }
 
 // End Show Alert
+
+// Image Preview
+const uploadImage = document.querySelector("[upload-image]");
+if (uploadImage) {
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]");
+
+    uploadImageInput.addEventListener("change", (event) => {
+        const [file] = uploadImageInput.files;
+        if (file) {
+            uploadImagePreview.src = URL.createObjectURL(file);
+        }
+    });
+}
+
+// End Image Preview

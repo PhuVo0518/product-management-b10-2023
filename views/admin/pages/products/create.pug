@@ -61,7 +61,7 @@ block main
                 min="0"
             )
 
-        div(class="form-group")
+        div(class="form-group" upload-image)
             label(for="thumbnail") Image 
             input(
                 type="file"
@@ -69,6 +69,12 @@ block main
                 id="thumbnail"
                 name="thumbnail"
                 accept="image/*"
+                upload-image-input
+            )
+            img(
+                src=""
+                class="image-preview"
+                upload-image-preview
             )
 
         div(class="form-group")
@@ -108,5 +114,3 @@ block main
                 type="submit"
                 class="btn btn-primary"
             ) Create New
-        
-    script(src="/admin/products/product.js") 
