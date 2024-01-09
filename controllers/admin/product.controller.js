@@ -169,3 +169,31 @@ module.exports.deleteItem = async (request, response) => {
 
     response.redirect("back");
 };
+
+// [GET] /admin/products/create
+module.exports.create = async (request, response) => {
+    response.render("admin/pages/products/create.pug", {
+        pageTitle: "Add a new product",
+    });
+};
+
+// [POST] /admin/products/create
+module.exports.createPost = async (request, response) => {
+    request.body.price = parseInt(request.body.price);
+    request.body.discountPercentage = parseInt(request.body.discountPercentage);
+    request.body.stock = parseInt(request.body.stock);
+
+    if (request.body.position == "") {
+        const countProducts = await Product.countDocuments();
+        request.body.position = countProducts + 1;
+    } else {
+        request.body.position = parseInt(request.body.position);
+    }
+
+    const product = new Product(request.body);
+    await product.save();
+
+    request.flash("success", "Add a new product successfully!");
+
+    response.redirect(`/${systemConfig.prefixAdmin}/products`);
+};
