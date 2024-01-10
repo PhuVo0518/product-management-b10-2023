@@ -18,17 +18,22 @@ module.exports.index = async (request, response) => {
     });
 };
 
-// // [GET] /products/detail
-// module.exports.detail = (request, response) => {
-//     response.send("Product Detail");
-// };
+// [GET] /products/:slug
+module.exports.detail = async (request, response) => {
+    try {
+        const slug = request.params.slug;
 
-// // [GET] /products/edit
-// module.exports.edit = (request, response) => {
-//     response.send("Product Edit");
-// };
+        const product = await Product.findOne({
+            slug: slug,
+            deleted: false,
+            status: "active",
+        });
 
-// // [GET] /products/create
-// module.exports.create = (request, response) => {
-//     response.send("Product Create");
-// };
+        response.render("client/pages/products/detail.pug", {
+            pageTitle: product.title,
+            product: product,
+        });
+    } catch (error) {
+        response.redirect("/");
+    }
+};
