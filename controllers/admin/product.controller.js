@@ -2,6 +2,7 @@ const Product = require("../../models/product.model");
 const filterStateHelper = require("../../helpers/filter-state.helper");
 const paginationHelper = require("../../helpers/pagination.helper");
 const systemConfig = require("../../config/system");
+const system = require("../../config/system");
 
 // [GET] /admin/products
 module.exports.index = async (request, response) => {
@@ -202,4 +203,62 @@ module.exports.createPost = async (request, response) => {
     request.flash("success", "Add a new product successfully!");
 
     response.redirect(`/${systemConfig.prefixAdmin}/products`);
+};
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (request, response) => {
+    try {
+        const id = request.params.id;
+
+        const product = await Product.findOne({
+            _id: id,
+            deleted: false,
+        });
+
+        response.render("admin/pages/products/edit.pug", {
+            pageTitle: "Edit the product",
+            product: product,
+        });
+    } catch (error) {
+        response.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
+};
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (request, response) => {
+    try {
+        const id = request.params.id;
+        // console.log(id);
+        // console.log(request.body);
+
+        // response.send("OK");
+
+        request.body.price = parseInt(request.body.price);
+        request.body.discountPercentage = parseInt(
+            request.body.discountPercentage
+        );
+        request.body.stock = parseInt(request.body.stock);
+
+        request.body.position = parseInt(request.body.position);
+
+        // console.log(request.file);
+
+        if (request.file && request.file.filename) {
+            request.body.thumbnail = `/uploads/${request.file.filename}`;
+        }
+
+        await Product.updateOne(
+            {
+                _id: id,
+                deleted: false,
+            },
+            request.body
+        );
+
+        request.flash("success", "Edit the product successfully!");
+
+        response.redirect("back");
+    } catch (error) {
+        response.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 };
