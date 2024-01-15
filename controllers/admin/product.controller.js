@@ -32,8 +32,17 @@ module.exports.index = async (request, response) => {
 
     // End Feature: Pagination
 
+    // Sort
+    const sort = {};
+    if (request.query.sortKey && request.query.sortValue) {
+      sort[request.query.sortKey] = request.query.sortValue;
+    } else {
+      sort["position"] = "desc";
+    }
+    // End Sort
+
     const products = await Product.find(find)
-      .sort({ position: "desc" })
+      .sort(sort)
       .limit(objectPagination.limitItems)
       .skip(objectPagination.skip);
 
