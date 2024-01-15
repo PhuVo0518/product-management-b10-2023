@@ -146,7 +146,6 @@ module.exports.changeMulti = async (request, response) => {
 module.exports.deleteItem = async (request, response) => {
   try {
     const id = request.params.id;
-
     // delete permanently
     // await Product.deleteOne({ _id: id });
 
