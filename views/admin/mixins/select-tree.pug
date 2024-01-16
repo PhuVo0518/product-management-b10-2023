@@ -1,0 +1,16 @@
+mixin select-tree(items, level = 1)
+    each item in items 
+        - const prefix = Array(level + 1).join("-- ")
+        option(value=item.id) #{prefix}#{item.title}
+        if(item.children)
+            +select-tree(item.children, level + 1)
+
+//- -- Smartphone
+//- ---- Samsung Smartphone
+//- ---- iPhone Smartphone 
+//- -- Fashion
+//- ---- Men's Fashion
+//- ------ Men's T-shirt
+//- ------ Men's Jeans
+//- ---- Women's Fashion
+//- ---- Kids' Fashion

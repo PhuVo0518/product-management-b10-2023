@@ -1,22 +1,31 @@
 const ProductCategory = require("../../models/product-category.model");
 const systemConfig = require("../../config/system");
 
+const createTreeHelper = require("../../helpers/create-tree.helper");
+
 // [GET] /admin/products-category
 module.exports.index = async (request, response) => {
   const records = await ProductCategory.find({
-    deleted: false
+    deleted: false,
   });
 
   response.render("admin/pages/products-category/index.pug", {
     pageTitle: "Product Category",
-    records: records
+    records: records,
   });
 };
 
 // [GET] /admin/products-category/create
-module.exports.create = (request, response) => {
+module.exports.create = async (request, response) => {
+  const records = await ProductCategory.find({
+    deleted: false,
+  });
+
+  const newRecords = createTreeHelper(records);
+
   response.render("admin/pages/products-category/create.pug", {
     pageTitle: "Add a new product category",
+    records: newRecords,
   });
 };
 
