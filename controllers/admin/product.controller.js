@@ -229,9 +229,16 @@ module.exports.edit = async (request, response) => {
       deleted: false,
     });
 
+    const records = await ProductCategory.find({
+      deleted: false,
+    });
+
+    const newRecords = createTreeHelper(records);
+
     response.render("admin/pages/products/edit.pug", {
       pageTitle: "Edit the product",
       product: product,
+      records: newRecords,
     });
   } catch (error) {
     response.redirect(`/${systemConfig.prefixAdmin}/products`);
