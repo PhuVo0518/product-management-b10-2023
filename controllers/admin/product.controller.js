@@ -3,6 +3,8 @@ const filterStateHelper = require("../../helpers/filter-state.helper");
 const paginationHelper = require("../../helpers/pagination.helper");
 const systemConfig = require("../../config/system");
 const system = require("../../config/system");
+const ProductCategory = require("../../models/product-category.model");
+const createTreeHelper = require("../../helpers/create-tree.helper");
 
 // [GET] /admin/products
 module.exports.index = async (request, response) => {
@@ -177,8 +179,15 @@ module.exports.deleteItem = async (request, response) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (request, response) => {
+  const records = await ProductCategory.find({
+    deleted: false,
+  });
+
+  const newRecords = createTreeHelper(records);
+
   response.render("admin/pages/products/create.pug", {
     pageTitle: "Add a new product",
+    records: newRecords,
   });
 };
 
