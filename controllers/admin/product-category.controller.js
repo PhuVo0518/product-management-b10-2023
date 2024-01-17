@@ -45,3 +45,54 @@ module.exports.createPost = async (request, response) => {
 
   response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
 };
+
+// [GET] /admin/products-category/edit/:id
+module.exports.edit = async (request, response) => {
+  try {
+    const id = request.params.id;
+    const data = await ProductCategory.findOne({
+      _id: id,
+      deleted: false,
+    });
+
+    const records = await ProductCategory.find({
+      deleted: false,
+    });
+
+    const newRecords = createTreeHelper(records);
+
+    response.render("admin/pages/products-category/edit.pug", {
+      pageTitle: "Edit a product category",
+      data: data,
+      records: newRecords,
+    });
+  } catch (error) {
+    response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
+  }
+};
+
+// [PATCH] /admin/products-category/edit/:id
+module.exports.editPatch = async (request, response) => {
+  try {
+    if (request.body.position == "") {
+      const countRecords = await ProductCategory.countDocuments();
+      request.body.position = countRecords + 1;
+    } else {
+      request.body.position = parseInt(request.body.position);
+    }
+
+    await ProductCategory.updateOne(
+      {
+        _id: request.params.id,
+        deleted: false,
+      },
+      request.body
+    );
+
+    request.flash("success", "Update Product Category successfully!");
+
+    response.redirect("back");
+  } catch (error) {
+    response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
+  }
+};
