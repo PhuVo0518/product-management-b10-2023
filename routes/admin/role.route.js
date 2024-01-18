@@ -15,4 +15,6 @@ router.get("/edit/:id", controller.edit);
 
 router.patch("/edit/:id", validate.createPost, controller.editPatch);
 
+router.get("/permissions", controller.permissions);
+
 module.exports = router;
