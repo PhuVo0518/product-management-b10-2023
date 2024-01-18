@@ -30,3 +30,42 @@ module.exports.createPost = async (request, response) => {
 
   response.redirect(`/${systemConfig.prefixAdmin}/roles`);
 };
+
+// [GET] /admin/roles/edit/:id
+module.exports.edit = async (request, response) => {
+  try {
+    const id = request.params.id;
+    const record = await Role.findOne({
+      _id: id,
+      deleted: false,
+    });
+
+    response.render("admin/pages/roles/edit.pug", {
+      pageTitle: "Edit a role",
+      record: record,
+    });
+  } catch (error) {
+    response.redirect(`/${systemConfig.prefixAdmin}/roles`);
+  }
+};
+
+// [PATCH] /admin/roles/edit/:id
+module.exports.editPatch = async (request, response) => {
+  try {
+    const id = request.params.id;
+
+    await Role.updateOne(
+      {
+        _id: id,
+        deleted: false,
+      },
+      request.body
+    );
+
+    request.flash("success", "Update the role successfully!");
+
+    response.redirect("back");
+  } catch (error) {
+    request.redirect(`/${systemConfig.prefixAdmin}/roles`);
+  }
+};
