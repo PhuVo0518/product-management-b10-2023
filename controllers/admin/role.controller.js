@@ -81,3 +81,27 @@ module.exports.permissions = async (request, response) => {
     records: records,
   });
 };
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsPatch = async (request, response) => {
+  const roles = JSON.parse(request.body.roles);
+
+  try {
+    for (const item of roles) {
+      await Role.updateOne(
+        {
+          _id: item.id,
+        },
+        {
+          permissions: item.permissions,
+        }
+      );
+    }
+
+    request.flash("success", "Update permissions successfully!");
+  } catch (error) {
+    request.flash("error", "Update permissions unsuccessfully!");
+  }
+
+  response.redirect("back");
+};
