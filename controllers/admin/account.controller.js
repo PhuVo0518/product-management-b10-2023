@@ -17,6 +17,13 @@ module.exports.index = async (request, response) => {
 
   const records = await Account.find(find);
 
+  for (const record of records) {
+    const role = await Role.findOne({
+      _id: record.role_id,
+    });
+    record.role = role;
+  }
+
   response.render("admin/pages/accounts/index.pug", {
     pageTitle: "Account List",
     records: records,
@@ -43,7 +50,7 @@ module.exports.createPost = async (request, response) => {
   const record = new Account(request.body);
   await record.save();
 
-  request.flash('success', 'Add a new account successfully!');
+  request.flash("success", "Add a new account successfully!");
 
   response.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 };
