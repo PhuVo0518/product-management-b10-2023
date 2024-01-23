@@ -36,7 +36,7 @@ block main
 
                 //- Product Category
                 tr 
-                    td(colspan="3")
+                    td(colspan=`${records.length + 1}`)
                         b Product Category 
 
                 tr(data-name='products-category_view')
@@ -66,7 +66,7 @@ block main
 
                 //- Product
                 tr 
-                    td(colspan="3")
+                    td(colspan=`${records.length + 1}`)
                         b Product 
 
                 tr(data-name='products_view')
@@ -96,7 +96,7 @@ block main
 
                 //- Role
                 tr 
-                    td(colspan="3")
+                    td(colspan=`${records.length + 1}`)
                         b Role 
 
                 tr(data-name='roles_view')
