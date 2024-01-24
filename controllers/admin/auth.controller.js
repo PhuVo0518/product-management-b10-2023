@@ -43,3 +43,9 @@ module.exports.loginPost = async (request, response) => {
 
   response.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
 };
+
+// [GET] /admin/auth/logout
+module.exports.logout = async (request, response) => {
+  response.clearCookie("token");
+  response.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
+};
