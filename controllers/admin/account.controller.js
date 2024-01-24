@@ -54,3 +54,47 @@ module.exports.createPost = async (request, response) => {
 
   response.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 };
+
+// [GET] /admin/accounts/edit/:id
+module.exports.edit = async (request, response) => {
+  const find = {
+    _id: request.params.id,
+    deleted: false,
+  };
+
+  try {
+    const data = await Account.findOne(find);
+
+    const roles = await Role.find({
+      deleted: false,
+    });
+
+    response.render("admin/pages/accounts/edit.pug", {
+      pageTitle: "Edit an account",
+      data: data,
+      roles: roles,
+    });
+  } catch (error) {
+    response.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+  }
+};
+
+// [PATCH] /admin/accounts/edit/:id
+module.exports.editPatch = async (request, response) => {
+  const id = request.params.id;
+
+  if (request.body.password) {
+    request.body.password = md5(request.body.password);
+  } else {
+    delete request.body.password;
+  }
+
+  await Account.updateOne(
+    {
+      _id: id,
+    },
+    request.body
+  );
+
+  response.redirect("back");
+};
