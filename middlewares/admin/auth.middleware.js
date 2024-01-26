@@ -1,4 +1,5 @@
 const Account = require("../../models/account.model");
+const Role = require("../../models/role.model");
 const systemConfig = require("../../config/system");
 
 module.exports.requireAuth = async (request, response, next) => {
@@ -12,12 +13,20 @@ module.exports.requireAuth = async (request, response, next) => {
       token: request.cookies.token,
       deleted: false,
       status: "active",
-    });
+    }).select("-password");
 
     if (!user) {
       response.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
       return;
     }
+
+    const role = await Role.findOne({
+      _id: user.role.id,
+      deleted: false,
+    });
+
+    response.locals.user = user;
+    response.locals.role = role;
 
     next();
   } catch (error) {

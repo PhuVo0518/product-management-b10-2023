@@ -31,19 +31,23 @@ module.exports.create = async (request, response) => {
 
 // [POST] /admin/products-category/createPost
 module.exports.createPost = async (request, response) => {
-  if (request.body.position == "") {
-    const countRecords = await ProductCategory.countDocuments();
-    request.body.position = countRecords + 1;
+  if (response.locals.role.permissions.includes("products-category_create")) {
+    if (request.body.position == "") {
+      const countRecords = await ProductCategory.countDocuments();
+      request.body.position = countRecords + 1;
+    } else {
+      request.body.position = parseInt(request.body.position);
+    }
+
+    const record = new ProductCategory(request.body);
+    await record.save();
+
+    request.flash("success", "Add a new product category successfully!");
+
+    response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
   } else {
-    request.body.position = parseInt(request.body.position);
+    response.send("403");
   }
-
-  const record = new ProductCategory(request.body);
-  await record.save();
-
-  request.flash("success", "Add a new product category successfully!");
-
-  response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
 };
 
 // [GET] /admin/products-category/edit/:id
@@ -74,24 +78,28 @@ module.exports.edit = async (request, response) => {
 // [PATCH] /admin/products-category/edit/:id
 module.exports.editPatch = async (request, response) => {
   try {
-    if (request.body.position == "") {
-      const countRecords = await ProductCategory.countDocuments();
-      request.body.position = countRecords + 1;
+    if (response.locals.role.permissions.includes("products-category_edit")) {
+      if (request.body.position == "") {
+        const countRecords = await ProductCategory.countDocuments();
+        request.body.position = countRecords + 1;
+      } else {
+        request.body.position = parseInt(request.body.position);
+      }
+
+      await ProductCategory.updateOne(
+        {
+          _id: request.params.id,
+          deleted: false,
+        },
+        request.body
+      );
+
+      request.flash("success", "Update Product Category successfully!");
+
+      response.redirect("back");
     } else {
-      request.body.position = parseInt(request.body.position);
+      response.send("403");
     }
-
-    await ProductCategory.updateOne(
-      {
-        _id: request.params.id,
-        deleted: false,
-      },
-      request.body
-    );
-
-    request.flash("success", "Update Product Category successfully!");
-
-    response.redirect("back");
   } catch (error) {
     response.redirect(`/${systemConfig.prefixAdmin}/products-category`);
   }
