@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema(
       default: false,
     },
     deletedAt: Date,
+    createdBy: {
+      accountId: String,
+      createdAt: Date,
+    },
   },
   {
     timestamps: true,

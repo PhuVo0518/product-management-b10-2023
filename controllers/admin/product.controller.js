@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model");
+const Account = require("../../models/account.model");
 const filterStateHelper = require("../../helpers/filter-state.helper");
 const paginationHelper = require("../../helpers/pagination.helper");
 const systemConfig = require("../../config/system");
@@ -55,6 +56,16 @@ module.exports.index = async (request, response) => {
     //     keyword: request.query.keyword,
     //     pagination: objectPagination,
     // });
+
+    for (const product of products) {
+      const account = await Account.findOne({
+        _id: product.createdBy.accountId,
+      });
+
+      if (account) {
+        product.createdBy.fullName = account.fullName;
+      }
+    }
 
     // Check error
     if (products.length > 0 || countProducts == 0) {
@@ -203,6 +214,11 @@ module.exports.createPost = async (request, response) => {
   } else {
     request.body.position = parseInt(request.body.position);
   }
+
+  request.body.createdBy = {
+    accountId: response.locals.user.id,
+    createdAt: new Date(),
+  };
 
   // console.log(request.file);
   // console.log(request.body);

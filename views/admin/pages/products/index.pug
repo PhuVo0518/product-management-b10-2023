@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/moment.pug
 
 block main 
     +alert-success(5000)
@@ -79,6 +80,7 @@ block main
                     th Price 
                     th Position
                     th Status 
+                    th Created By
                     th Action 
                 
                 tbody
@@ -125,6 +127,10 @@ block main
                                         button-change-status  
                                         class="badge badge-danger"
                                     ) Inactive
+                            td 
+                                p #{item.createdBy.fullName}
+                                if(item.createdBy.createdAt)
+                                    +formatDate(item.createdBy.createdAt)
                             td 
                                 a(
                                     href=`/${prefixAdmin}/products/detail/${item.id}`

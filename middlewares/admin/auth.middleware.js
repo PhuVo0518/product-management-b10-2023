@@ -19,11 +19,13 @@ module.exports.requireAuth = async (request, response, next) => {
       response.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
       return;
     }
+    console.log(user);
 
     const role = await Role.findOne({
-      _id: user.role.id,
+      _id: user.role_id,
       deleted: false,
     });
+    console.log(role);
 
     response.locals.user = user;
     response.locals.role = role;
